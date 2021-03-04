@@ -17,7 +17,7 @@ app.get('/api/todos', (req, res) => {
 });
 
 app.post('/api/todos', (req, res) => {
-    let todo = { id: increment++, content: req.body.content };
+    let todo = { id: increment++, ...req.body };
     tableau.push(todo);
     res.json(todo);
 });
@@ -34,9 +34,10 @@ app.delete('/api/todo/:id', (req, res) => {
 app.put('/api/todo/put/:id', (req, res) => {
     const todo = tableau.find(todo => todo.id === parseInt(req.params.id));
     if (!todo)
-        return res.status(404).json("Le todo ne peut pas être modifié");
+        return res.status(404).json("Le todo est introuvable");
     
     todo.content = req.body.content;
+    todo.color = req.body.color;
     res.json(todo);
 });
 
@@ -44,7 +45,6 @@ app.get('/api/todo/get/:id', (req, res) => {
    let todo = tableau.find(todo => todo.id === parseInt(req.params.id));
    if (!todo)
        return res.status(404).json("Le todo est introuvable");
-
     res.json(todo);
 });
 
